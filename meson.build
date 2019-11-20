@@ -4,6 +4,8 @@ project('pa4_graph', 'cpp',
                      'b_coverage=true',
                      'cpp_std=c++14'])
 
+# cxxopts_proj = subproject('cxxopts')
+# cxxopts_dep = cxxopts_proj.get_variable('cxxopts_dep')
 
 # === src dependencies ===
 # === end src dependencies ===
