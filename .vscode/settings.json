@@ -6,6 +6,8 @@
         "cstddef": "cpp",
         "fstream": "cpp",
         "*.tcc": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "typeinfo": "cpp",
+        "type_traits": "cpp"
     }
 }

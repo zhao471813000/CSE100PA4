@@ -1,7 +1,7 @@
 # Define ActorGraph using function library() and declare dependency of ActorGraph_dep
 ActorGraph = library('ActorGraph',
     sources:['ActorGraph.hpp', 'ActorGraph.cpp'],
-    dependencies : [Movie_dep, Actor_dep])
+    dependencies : [ActorMovie_dep])
 
 inc = include_directories('.')
 
