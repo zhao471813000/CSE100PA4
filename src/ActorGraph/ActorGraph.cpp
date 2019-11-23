@@ -107,7 +107,8 @@ void ActorGraph::BFS(Actor* source) {
     queue<Actor*> toExplore;
     for (pair<string, Actor*> p : actors) {
         p.second->dist = INF;
-        p.second->prev = NULL;
+        p.second->prev_actor = NULL;
+        p.second->prev_movie = NULL;
     }
     source->dist = 0;
     toExplore.push(source);
@@ -118,7 +119,8 @@ void ActorGraph::BFS(Actor* source) {
         for (Movie* movie : next->movies) {
             for (Actor* actor : movie->actors) {
                 if (actor->dist == INF) {
-                    actor->prev = next;
+                    actor->prev_actor = next;
+                    actor->prev_movie = movie;
                     actor->dist = next->dist + 1;
                     toExplore.push(actor);
                 }

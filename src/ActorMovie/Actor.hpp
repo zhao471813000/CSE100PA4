@@ -19,8 +19,11 @@ class Actor {
   public:
     string name;
     vector<Movie*> movies;
+
+    // for BFS
     int dist;
-    Actor* prev;
+    Actor* prev_actor;
+    Movie* prev_movie;
     Actor(string name) : name(name){};
     ~Actor();
 };
