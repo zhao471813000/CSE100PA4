@@ -20,12 +20,13 @@ class Actor {
     string name;
     vector<Movie*> movies;
 
-    // for BFS
-    int dist;
+    unordered_map<Actor*, int> edgeNum;  
+
+    int dist;  // for BFS
     Actor* prev_actor;
     Movie* prev_movie;
+
     Actor(string name) : name(name){};
-    ~Actor();
 };
 
 #endif

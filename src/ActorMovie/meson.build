@@ -1,6 +1,6 @@
 # Define Actor using function library() and declare dependency of Actor_dep
 ActorMovie = library('ActorMovie',
-    sources:['Actor.hpp', 'Actor.cpp', 'Movie.hpp', 'Movie.cpp'])
+    sources:['Actor.hpp', 'Movie.hpp'])
 
 inc = include_directories('.')
 

@@ -14,3 +14,7 @@ test_Movie_exe = executable ('test_Movie.cpp.executable',
     dependencies : [ActorMovie_dep, gtest_dep])
 test('my Movie test', test_Movie_exe)
 
+# test_Linkpredictor_exe = executable ('test_linkpredictor.cpp.executable',
+#     sources: ['test_linkpredictor.cpp'],
+#     dependencies : [ActorGraph_dep, ActorMovie_dep, gtest_dep])
+# test('my Linkpredictor test', test_Linkpredictor_exe)

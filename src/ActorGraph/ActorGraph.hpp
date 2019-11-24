@@ -11,9 +11,11 @@
 #define ACTORGRAPH_HPP
 
 #include <iostream>
+#include <queue>
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include "Actor.hpp"
 #include "Movie.hpp"
@@ -33,7 +35,13 @@ class ActorGraph {
      */
     ActorGraph(void);
 
-    // add some more methods here
+    /** Destructor of the Actor graph
+     */
+    ~ActorGraph();
+
+    /** Only run first and second level BFS from source. */
+    void levelBFS(Actor* source, unordered_set<Actor*>& firstLevel,
+                  unordered_set<Actor*>& secondLevel);
     unordered_map<string, Actor*> getActors() { return actors; }
     unordered_map<string, Movie*> getMovies() { return movies; }
 

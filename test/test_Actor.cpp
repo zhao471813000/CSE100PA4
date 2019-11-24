@@ -9,9 +9,11 @@ using namespace testing;
 
 class SimpleActorFixture : public ::testing::Test {
   protected:
+    Actor* actor;
+
   public:
-    SimpleActorFixture() {
-        // initialization code here
-    }
+    SimpleActorFixture() { actor = new Actor("Kevin Bacon"); }
 };
-TEST_F(SimpleActorFixture, TEST_CONSTRUCTOR) {}
+TEST_F(SimpleActorFixture, TEST_CONSTRUCTOR) {
+    ASSERT_EQ("Kevin Bacon", actor->name);
+}

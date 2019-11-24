@@ -10,19 +10,25 @@
 #include "ActorGraph.hpp"
 #include <fstream>
 #include <iostream>
-#include <queue>
 #include "Actor.hpp"
 #include "Movie.hpp"
 
 using namespace std;
 
-/**
- * Constructor of the Actor graph
- */
+/** Constructor of the Actor graph */
 ActorGraph::ActorGraph(void) {}
 
-/** You can modify this method definition as you wish
- *
+/** Destructor of the Actor graph. */
+ActorGraph::~ActorGraph() {
+    for (pair<string, Actor*> p : actors) {
+        delete p.second;
+    }
+    for (pair<string, Movie*> p : movies) {
+        delete p.second;
+    }
+}
+
+/**
  * Load the graph from a tab-delimited file of actor->movie relationships.
  *
  * in_filename - input filename
@@ -123,6 +129,49 @@ void ActorGraph::BFS(Actor* source) {
                     actor->prev_movie = movie;
                     actor->dist = next->dist + 1;
                     toExplore.push(actor);
+                }
+            }
+        }
+    }
+}
+/** Updates the number of edges between actors in the first and second level. */
+void ActorGraph::levelBFS(Actor* source, unordered_set<Actor*>& firstLevel,
+                          unordered_set<Actor*>& secondLevel) {
+    for (pair<string, Actor*> p : actors) {
+        p.second->dist = INF;
+        p.second->edgeNum.clear();
+    }
+    source->dist = 0;
+
+    // first level
+    for (Movie* movie : source->movies) {
+        for (Actor* actor : movie->actors) {
+            if (actor->dist > 0) {  // exclude source
+                if (actor->edgeNum.find(source) == actor->edgeNum.end()) {
+                    actor->edgeNum[source] = 1;
+                } else {
+                    actor->edgeNum[source] += 1;
+                }
+                actor->dist = 1;
+                firstLevel.insert(actor);
+            }
+        }
+    }
+    // second level
+    for (Actor* first : firstLevel) {
+        for (Movie* movie : first->movies) {
+            for (Actor* actor : movie->actors) {
+                if (actor->dist >= 1 &&
+                    actor->name != first->name) {  // exclude source and itself
+                    if (actor->edgeNum.find(first) == actor->edgeNum.end()) {
+                        actor->edgeNum[first] = 1;
+                    } else {
+                        actor->edgeNum[first] += 1;
+                    }
+                    if (actor->dist > 1) {
+                        actor->dist = 2;
+                        secondLevel.insert(actor);
+                    }
                 }
             }
         }

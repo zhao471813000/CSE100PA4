@@ -1,6 +1,18 @@
 /**
+ * Implements pathfinder to work on an unweighted graph.
  *
- * Author: Dingqian Zhao A53319585, Kexin Hong A53311871
+ * ./pathfinder.cpp.executable will take 4 command-line arguments:
+ * 1. Name of text file containing the tab-delimited movie casts
+ * 2. Lower-case character u or w
+ *  a. u -- builds the graph with unweighted edges
+ *  b. w -- builds the graph with weighted edges
+ * 3. Name of text file containing the pairs of actors to find paths, where
+ * first line in the file is a header, and each row contains the names of the
+ * two actors separated by a single tab character
+ * 4. Name of output text file. Pathfinder will create a new file to store the
+ * results from finding the shortest path between two actors
+ *
+ *  Author: Dingqian Zhao A53319585, Kexin Hong A53311871
  */
 #include <fstream>
 #include <iostream>
@@ -10,8 +22,8 @@
 #include "Movie.hpp"
 
 using namespace std;
-/** Return true if file was loaded sucessfully, false otherwise. Store the
- * actors in the actorpair vector. */
+/** Return true if file was loaded sucessfully, false otherwise.
+ *  Store the actors in the actorpair vector. */
 bool loadFromPair(const char* in_filename, vector<string>& actorPair) {
     ifstream infile(in_filename);
     bool header = false;
@@ -43,7 +55,8 @@ bool loadFromPair(const char* in_filename, vector<string>& actorPair) {
     infile.close();
     return true;
 }
-/* Main program. */
+
+/* Main program that finds path between actor pairs. */
 int main(int argc, char** argv) {
     if (argc != 5) {
         cout << "Wrong input!" << endl;
@@ -53,16 +66,19 @@ int main(int argc, char** argv) {
     char* flag = argv[2];
     char* in_filename = argv[3];
     char* out_filename = argv[4];
-    bool use_weighted_edges;
 
+    bool use_weighted_edges;
     if (flag == "u") {
         use_weighted_edges = false;
     } else {
         use_weighted_edges = true;
     }
+
+    // build actor graph
     ActorGraph graph;
     graph.loadFromFile(graph_filename, use_weighted_edges);
 
+    // read actor pairs into the vector actorPair
     vector<string> actorPair;
     loadFromPair(in_filename, actorPair);
 

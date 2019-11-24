@@ -20,8 +20,6 @@ class Movie {
     vector<Actor*> actors;
     int year;
     Movie(string name, int year) : name(name), year(year){};
-
-    ~Movie();
 };
 
 #endif
