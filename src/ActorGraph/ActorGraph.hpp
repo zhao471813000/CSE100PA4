@@ -44,6 +44,9 @@ class ActorGraph {
                   unordered_set<Actor*>& secondLevel);
     unordered_map<string, Actor*> getActors() { return actors; }
     unordered_map<string, Movie*> getMovies() { return movies; }
+    
+    /** Builds graph.*/
+    void buildGraph(string actor_name, string movie_title, int year);
 
     /** You can modify this method definition as you wish
      *

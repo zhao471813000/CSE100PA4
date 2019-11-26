@@ -41,34 +41,26 @@ bool ActorGraph::loadFromFile(const char* in_filename,
                               bool use_weighted_edges) {
     // Initialize the file stream
     ifstream infile(in_filename);
-
     bool have_header = false;
-
     // keep reading lines until the end of file is reached
     while (infile) {
         string s;
-
         // get the next line
         if (!getline(infile, s)) break;
-
         if (!have_header) {
             // skip the header
             have_header = true;
             continue;
         }
-
         istringstream ss(s);
         vector<string> record;
-
         while (ss) {
             string str;
-
             // get the next string before hitting a tab character and put it in
             // 'str'
             if (!getline(ss, str, '\t')) break;
             record.push_back(str);
         }
-
         if (record.size() != 3) {
             // we should have exactly 3 columns
             continue;
@@ -78,27 +70,29 @@ bool ActorGraph::loadFromFile(const char* in_filename,
         string movie_title(record[1]);
         int year = stoi(record[2]);
 
-        // add year to movie title in case one movie title in different years
-        string movie_title_year = movie_title + to_string(year);
-        // update unordered_map actors and movies
-        Actor* actor;
-        Movie* movie;
-        if (actors.find(actor_name) == actors.end()) {
-            actor = new Actor(actor_name);
-            actors[actor_name] = actor;
-        } else {
-            actor = actors[actor_name];
-        }
+        buildGraph(actor_name, movie_title, year);
 
-        if (movies.find(movie_title_year) == movies.end()) {
-            movie = new Movie(movie_title, year);
-            movies[movie_title_year] = movie;
-        } else {
-            movie = movies[movie_title_year];
-        }
-        // Builds the graph according to unordered_map actors and movies.
-        actor->movies.push_back(movie);
-        movie->actors.push_back(actor);
+        // // add year to movie title in case one movie title in different years
+        // string movie_title_year = movie_title + to_string(year);
+        // // update unordered_map actors and movies
+        // Actor* actor;
+        // Movie* movie;
+        // if (actors.find(actor_name) == actors.end()) {
+        //     actor = new Actor(actor_name);
+        //     actors[actor_name] = actor;
+        // } else {
+        //     actor = actors[actor_name];
+        // }
+
+        // if (movies.find(movie_title_year) == movies.end()) {
+        //     movie = new Movie(movie_title, year);
+        //     movies[movie_title_year] = movie;
+        // } else {
+        //     movie = movies[movie_title_year];
+        // }
+        // // Builds the graph according to unordered_map actors and movies.
+        // actor->movies.push_back(movie);
+        // movie->actors.push_back(actor);
     }
 
     if (!infile.eof()) {
@@ -108,6 +102,33 @@ bool ActorGraph::loadFromFile(const char* in_filename,
     infile.close();
     return true;
 }
+
+/** Builds graph. */
+void ActorGraph::buildGraph(string actor_name, string movie_title, int year) {
+    // add year to movie title in case one movie title in different years
+    string movie_title_year = movie_title + to_string(year);
+    // update unordered_map actors and movies
+    Actor* actor;
+    Movie* movie;
+    if (actors.find(actor_name) == actors.end()) {
+        actor = new Actor(actor_name);
+        actors[actor_name] = actor;
+    } else {
+        actor = actors[actor_name];
+    }
+
+    if (movies.find(movie_title_year) == movies.end()) {
+        movie = new Movie(movie_title, year);
+        movies[movie_title_year] = movie;
+    } else {
+        movie = movies[movie_title_year];
+    }
+    // Builds the graph according to unordered_map actors and movies.
+    actor->movies.push_back(movie);
+    movie->actors.push_back(actor);
+}
+
+/** BFS traverse the actor graph. */
 void ActorGraph::BFS(Actor* source) {
     // initialize dist and prev for all nodes
     queue<Actor*> toExplore;

@@ -12,14 +12,28 @@ class SmallActorGraphFixture : public ::testing::Test {
     ActorGraph actorGraph;
 
   public:
-    // SmallActorGraphFixture() {
-    // initialization code here
-    // const char* in_filename = "data/imdb_small_sample.tsv";
-    // actorGraph.loadFromFile(in_filename, false);
-    // unordered_map<string, Actor*> actors = actorGraph.getActors();
-    // unordered_map<string, Movie*> movies = actorGraph.getMovies();
-    // }
 };
+
+TEST_F(SmallActorGraphFixture, TEST_LOADFROMGRAPH) {
+    const char* in_filename = "data/imdb_small_sample.tsv";
+    actorGraph.loadFromFile(in_filename, false);
+}
+
+TEST_F(SmallActorGraphFixture, TEST_BUILDGRAPH) {
+    actorGraph.buildGraph("KB", "first", 2011);
+    actorGraph.buildGraph("JM", "first", 2011);
+    actorGraph.buildGraph("JM", "ap", 2012);
+    actorGraph.buildGraph("MF", "first", 2011);
+    actorGraph.buildGraph("MF", "ap", 2012);
+    Actor* kb = actorGraph.actors["KB"];
+    Actor* jm = actorGraph.actors["JM"];
+    Actor* mf = actorGraph.actors["MF"];
+    actorGraph.BFS(kb);
+    ASSERT_EQ(kb->dist, 0);
+    ASSERT_EQ(mf->dist, 1);
+    ASSERT_EQ(jm->dist, 1);
+}
+
 TEST_F(SmallActorGraphFixture, TEST_BFS) {
     Actor* kb = new Actor("KB");
     Actor* jm = new Actor("JM");
@@ -61,4 +75,16 @@ TEST_F(SmallActorGraphFixture, TEST_BFS) {
     actorGraph.BFS(kb);
     ASSERT_EQ(kb->dist, 0);
     ASSERT_EQ(sl->dist, 2);
+
+    unordered_set<Actor*> firstLevel;
+    unordered_set<Actor*> secondLevel;
+    actorGraph.levelBFS(kb, firstLevel, secondLevel);
+    unordered_set<Actor*> expectedFirstLevel;
+    expectedFirstLevel.insert(jm);
+    expectedFirstLevel.insert(mf);
+    unordered_set<Actor*> expectedSecondLevel;
+    expectedSecondLevel.insert(kw);
+    expectedSecondLevel.insert(sl);
+    ASSERT_EQ(firstLevel, expectedFirstLevel);
+    ASSERT_EQ(secondLevel, expectedSecondLevel);
 }
