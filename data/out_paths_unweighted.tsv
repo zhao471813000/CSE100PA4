@@ -1,6 +1,0 @@
-(actor)--[movie#@year]-->(actor)--...
-(Robert Downey Jr.)--[The Avengers Assemble Premiere#@2012]-->(Chris Evans)
-(Amy Adams)--[Big Eyes#@2014]-->(Danny Huston)--[Birth#@2004]-->(Nicole Kidman)
-(Will Smith)--[Gemini Man#@2019]-->(Clive Owen)--[Sin City#@2005]-->(Bruce Willis)
-(James McAvoy)--[X-Men: Apocalypse#@2016]-->(Michael Fassbender)
-(Djimon Hounsou)--[Amistad#@1997]-->(Anthony Hopkins)--[Blackway#@2015]-->(Ray Liotta)--[All Things Fall Apart#@2011]-->(50 Cent)
