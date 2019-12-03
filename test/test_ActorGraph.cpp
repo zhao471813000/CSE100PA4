@@ -22,16 +22,41 @@ TEST_F(SmallActorGraphFixture, TEST_LOADFROMGRAPH) {
 TEST_F(SmallActorGraphFixture, TEST_BUILDGRAPH) {
     actorGraph.buildGraph("KB", "first", 2011);
     actorGraph.buildGraph("JM", "first", 2011);
-    actorGraph.buildGraph("JM", "ap", 2012);
+    actorGraph.buildGraph("JM", "ap", 2016);
+    actorGraph.buildGraph("JM", "glass", 2019);
     actorGraph.buildGraph("MF", "first", 2011);
-    actorGraph.buildGraph("MF", "ap", 2012);
+    actorGraph.buildGraph("MF", "ap", 2016);
+    actorGraph.buildGraph("MF", "alien", 2017);
+    actorGraph.buildGraph("SL", "glass", 2019);
+    actorGraph.buildGraph("SL", "avengers", 2019);
+    actorGraph.buildGraph("RB", "avengers", 2019);
+    actorGraph.buildGraph("RB", "spider", 2017);
+    actorGraph.buildGraph("TH", "spider", 2017);
+    actorGraph.buildGraph("TH", "war", 2017);
+    actorGraph.buildGraph("KW", "alien", 2017);
+    actorGraph.buildGraph("KW", "war", 2017);
+
     Actor* kb = actorGraph.actors["KB"];
     Actor* jm = actorGraph.actors["JM"];
     Actor* mf = actorGraph.actors["MF"];
+    Actor* sl = actorGraph.actors["SL"];
+    Actor* th = actorGraph.actors["TH"];
+    Actor* kw = actorGraph.actors["KW"];
+    Actor* rd = actorGraph.actors["RB"];
+    // test bfs
     actorGraph.BFS(kb);
     ASSERT_EQ(kb->dist, 0);
     ASSERT_EQ(mf->dist, 1);
     ASSERT_EQ(jm->dist, 1);
+
+    // test Dijkstra
+    actorGraph.Dijkstra(kb);
+    ASSERT_EQ(mf->dist, 9);
+    ASSERT_EQ(jm->dist, 9);
+    ASSERT_EQ(kw->dist, 12);
+    ASSERT_EQ(th->dist, 14);
+    ASSERT_EQ(rd->dist, 11);
+    ASSERT_EQ(sl->dist, 10);
 }
 
 TEST_F(SmallActorGraphFixture, TEST_BFS) {
@@ -45,13 +70,13 @@ TEST_F(SmallActorGraphFixture, TEST_BFS) {
     actorGraph.actors = {{"KB", kb}, {"JM", jm}, {"MF", mf}, {"KW", kw},
                          {"TH", th}, {"RD", rd}, {"SL", sl}};
 
-    Movie* m1 = new Movie("first", 2011);
-    Movie* m2 = new Movie("ap", 2012);
-    Movie* m3 = new Movie("glass", 2011);
-    Movie* m4 = new Movie("alien", 2019);
-    Movie* m5 = new Movie("avengers", 2011);
-    Movie* m6 = new Movie("spider", 2015);
-    Movie* m7 = new Movie("war", 2010);
+    Movie* m1 = new Movie("first", 2011, 0);
+    Movie* m2 = new Movie("ap", 2012, 0);
+    Movie* m3 = new Movie("glass", 2011, 0);
+    Movie* m4 = new Movie("alien", 2019, 0);
+    Movie* m5 = new Movie("avengers", 2011, 0);
+    Movie* m6 = new Movie("spider", 2015, 0);
+    Movie* m7 = new Movie("war", 2010, 0);
     actorGraph.movies = {{"first", m1}, {"ap", m2},       {"glass", m3},
                          {"alien", m4}, {"avengers", m5}, {"spider", m6},
                          {"war", m7}};

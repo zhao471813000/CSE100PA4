@@ -14,7 +14,7 @@ class SimpleMovieFixture : public ::testing::Test {
   public:
     SimpleMovieFixture() {
         // initialization code here
-        movie = new Movie("Joker", 2019);
+        movie = new Movie("Joker", 2019, 1);
     }
 };
 TEST_F(SimpleMovieFixture, TEST_CONSTRUCTOR) {

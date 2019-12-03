@@ -44,7 +44,7 @@ class ActorGraph {
                   unordered_set<Actor*>& secondLevel);
     unordered_map<string, Actor*> getActors() { return actors; }
     unordered_map<string, Movie*> getMovies() { return movies; }
-    
+
     /** Builds graph.*/
     void buildGraph(string actor_name, string movie_title, int year);
 
@@ -62,6 +62,8 @@ class ActorGraph {
 
     /** BFS traverse the actor graph. */
     void BFS(Actor* source);
+    /** Dijkstra to find the shortest path in a weighted graph. */
+    void Dijkstra(Actor* source);
 };
 
 #endif  // ACTORGRAPH_HPP

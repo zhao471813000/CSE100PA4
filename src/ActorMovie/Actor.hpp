@@ -17,16 +17,25 @@ class Movie;
 class Actor {
   private:
   public:
+    // connect by rank
+    int rank;
+
     string name;
     vector<Movie*> movies;
-
-    unordered_map<Actor*, int> edgeNum;  
+    bool done;
+    unordered_map<Actor*, int> edgeNum;
 
     int dist;  // for BFS
     Actor* prev_actor;
     Movie* prev_movie;
 
-    Actor(string name) : name(name){};
+    Actor* parent;
+
+    Actor(string name) : name(name) {
+        // initialize for MST
+        rank = 1;
+        parent = nullptr;
+    };
 };
 
 #endif

@@ -15,6 +15,23 @@
 
 using namespace std;
 
+const int CURRENT_YEAR = 2019;
+
+/** Define a MyComparator to allow for two priorities of the priority queue. */
+struct MyComparator {
+    bool operator()(pair<int, string> const& p1,
+                    pair<int, string> const& p2) const {
+        if (p1.first != p2.first) {
+            return p1.first > p2.first;
+        } else {
+            return p1.second < p2.second;
+        }
+    }
+};
+typedef priority_queue<pair<int, string>, vector<pair<int, string> >,
+                       MyComparator>
+    my_min_queue;
+
 /** Constructor of the Actor graph */
 ActorGraph::ActorGraph(void) {}
 
@@ -69,30 +86,7 @@ bool ActorGraph::loadFromFile(const char* in_filename,
         string actor_name(record[0]);
         string movie_title(record[1]);
         int year = stoi(record[2]);
-
         buildGraph(actor_name, movie_title, year);
-
-        // // add year to movie title in case one movie title in different years
-        // string movie_title_year = movie_title + to_string(year);
-        // // update unordered_map actors and movies
-        // Actor* actor;
-        // Movie* movie;
-        // if (actors.find(actor_name) == actors.end()) {
-        //     actor = new Actor(actor_name);
-        //     actors[actor_name] = actor;
-        // } else {
-        //     actor = actors[actor_name];
-        // }
-
-        // if (movies.find(movie_title_year) == movies.end()) {
-        //     movie = new Movie(movie_title, year);
-        //     movies[movie_title_year] = movie;
-        // } else {
-        //     movie = movies[movie_title_year];
-        // }
-        // // Builds the graph according to unordered_map actors and movies.
-        // actor->movies.push_back(movie);
-        // movie->actors.push_back(actor);
     }
 
     if (!infile.eof()) {
@@ -118,7 +112,8 @@ void ActorGraph::buildGraph(string actor_name, string movie_title, int year) {
     }
 
     if (movies.find(movie_title_year) == movies.end()) {
-        movie = new Movie(movie_title, year);
+        int weight = 1 + (CURRENT_YEAR - year);
+        movie = new Movie(movie_title, year, weight);
         movies[movie_title_year] = movie;
     } else {
         movie = movies[movie_title_year];
@@ -128,6 +123,36 @@ void ActorGraph::buildGraph(string actor_name, string movie_title, int year) {
     movie->actors.push_back(actor);
 }
 
+/** Dijkstra to find the shortest path in a weighted graph. */
+void ActorGraph::Dijkstra(Actor* source) {
+    my_min_queue pq;
+    for (pair<string, Actor*> p : actors) {
+        p.second->dist = INF;
+        p.second->prev_actor = NULL;
+        p.second->prev_movie = NULL;
+        p.second->done = false;
+    }
+    source->dist = 0;
+    pq.push(make_pair(source->dist, source->name));
+    while (!pq.empty()) {
+        Actor* curr = actors[pq.top().second];
+        pq.pop();
+        if (!curr->done) {
+            curr->done = true;
+            for (Movie* movie : curr->movies) {
+                for (Actor* actor : movie->actors) {
+                    int c = curr->dist + movie->weight;
+                    if (c < actor->dist) {
+                        actor->prev_actor = curr;
+                        actor->prev_movie = movie;
+                        actor->dist = c;
+                        pq.push(make_pair(actor->dist, actor->name));
+                    }
+                }
+            }
+        }
+    }
+}
 /** BFS traverse the actor graph. */
 void ActorGraph::BFS(Actor* source) {
     // initialize dist and prev for all nodes

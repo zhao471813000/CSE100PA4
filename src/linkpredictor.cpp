@@ -13,27 +13,12 @@
 #include <iostream>
 
 #include "Actor.hpp"
+#include "ActorGraph.cpp"
 #include "ActorGraph.hpp"
 #include "Movie.hpp"
 
 using namespace std;
 const int FIXED_PQ_SIZE = 4;  // pq should be fixed-size
-
-/** Define a MyComparator to allow for two priorities of the priority queue.
- * This priority queue is a fixed-lengthed one.*/
-struct MyComparator {
-    bool operator()(pair<int, string> const& p1,
-                    pair<int, string> const& p2) const {
-        if (p1.first != p2.first) {
-            return p1.first > p2.first;
-        } else {
-            return p1.second < p2.second;
-        }
-    }
-};
-typedef priority_queue<pair<int, string>, vector<pair<int, string> >,
-                       MyComparator>
-    my_min_queue;
 
 /** Loads the source actor to a vector from the input filename. */
 bool loadSource(const char* in_filename, vector<string>& sourceActor) {
@@ -68,7 +53,7 @@ bool loadSource(const char* in_filename, vector<string>& sourceActor) {
     return true;
 }
 
-/** Updates the priority queue of each actor*/
+/** Updates the priority queue of each actor. */
 void updatePriority(unordered_set<Actor*> const& firstLevel,
                     unordered_set<Actor*> const& secondLevel,
                     my_min_queue& firstPQ, my_min_queue& secondPQ,
@@ -134,11 +119,6 @@ int main(int argc, char** argv) {
     char* actorlist = argv[2];
     char* link_collaborated = argv[3];
     char* link_uncollaborated = argv[4];
-
-    // char* graph_filename = "data/imdb_small_sample.tsv";
-    // char* actorlist = "data/test_actors.tsv";
-    // char* link_collaborated = "out_link_collaborated.tsv";
-    // char* link_uncollaborated = "out_link_uncollaborated.tsv";
 
     // build actor graph
     ActorGraph graph;

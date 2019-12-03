@@ -19,7 +19,8 @@ class Movie {
     string name;
     vector<Actor*> actors;
     int year;
-    Movie(string name, int year) : name(name), year(year){};
+    int weight;
+    Movie(string name, int year, int weight) : name(name), year(year), weight(weight){};
 };
 
 #endif

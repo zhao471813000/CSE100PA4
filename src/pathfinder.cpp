@@ -94,7 +94,10 @@ int main(int argc, char** argv) {
             outfile << endl;
             continue;
         }
-        graph.BFS(graph.actors[source]);
+        if (use_weighted_edges)
+            graph.Dijkstra(graph.actors[source]);
+        else
+            graph.BFS(graph.actors[source]);
         Actor* curr = graph.actors[target];
         // check if there exists a path between two actors
         if (curr->prev_actor == NULL) {
