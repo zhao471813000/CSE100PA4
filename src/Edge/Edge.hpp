@@ -30,6 +30,6 @@ class Edge {
         : weight(weight), movie(movie), actor1(actor1), actor2(actor2) {}
 
     /** Destructor of Edge */
-    ~Edge();
+    ~Edge() {}
 };
 #endif

@@ -66,6 +66,7 @@ int main(int argc, char** argv) {
 
     // put edges in pq
     edge_priority_queue edgePQ;
+    vector<Edge*> edgeVec;
     for (pair<string, Movie*> p : graph.movies) {
         int size = p.second->actors.size();
         for (int i = 0; i < size; i++) {
@@ -73,6 +74,7 @@ int main(int argc, char** argv) {
                 Edge* e = new Edge(p.second->weight, p.second,
                                    p.second->actors[i], p.second->actors[j]);
                 edgePQ.push(make_pair(e->weight, e));
+                edgeVec.push_back(e);
             }
         }
     }
@@ -98,5 +100,8 @@ int main(int argc, char** argv) {
     outfile << "TOTAL EDGE WEIGHTS: " << totalWeight << endl;
 
     outfile.close();
+    for (Edge* e : edgeVec) {
+        delete e;
+    }
     return 0;
 }
